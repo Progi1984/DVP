@@ -5,7 +5,7 @@
 	 */
 	
 	$arrResult = array();
-
+	$arrResult['result'] = false;
 	if(isset($_POST['type'])){
 		// FR : Si le fichier contenant les taches n'existe pas, on le crée.
 		// EN : If the file containing tasks doesn't exist, we create it.
@@ -29,7 +29,7 @@
 		// EN : If the action is a deletion...
 		elseif($_POST['type'] == 'del'){
 			if(isset($arrTasks[$_POST['pos']])){
-				unset($arrTasks[$_POST['pos']]);
+				array_splice($arrTasks, $_POST['pos'], 1);
 				$arrResult['result'] = true;
 			} else {
 				$arrResult['result'] = false;
@@ -40,7 +40,7 @@
 		// EN : We encode the array in a JSON string and we save it.
 		$sDbTasks = json_encode($arrTasks);
 		file_put_contents('db.txt', $sDbTasks);
-		
 	}
-	json_encode($arrResult);
+	
+	echo json_encode($arrResult);
 ?>
