@@ -1,33 +1,27 @@
 <?php
-	/**
-	 * File : ajax.php
-	 *
-	 */
-	
+
 	$arrResult = array();
 	$arrResult['result'] = false;
 	if(isset($_POST['type'])){
-		// FR : Si le fichier contenant les taches n'existe pas, on le crée.
-		// EN : If the file containing tasks doesn't exist, we create it.
+		// Si le fichier contenant les taches n'existe pas, on le crée.
 		if(!file_exists('db.txt')){
 			file_put_contents('db.txt', '');
 		}
 
-		// FR : On charge le fichier & décode la chaine JSON contenant les tâches.
-		// EN : We load the file and decode the JSON string containing tasks.
+		// On charge le fichier & décode la chaine JSON contenant les tâches.
 		$sDbTasks = file_get_contents('db.txt');
 		$arrTasks = json_decode($sDbTasks);
 
-		// FR : Si l'action est un ajout...
-		// EN : If the action is an addition...
+		// Si l'action est un ajout...
 		if($_POST['type'] == 'add'){
+			// ... on ajoute l'élément aux tableaux des taches.
 			$arrTasks[] = $_POST['item'];
 			$arrResult['result'] = true;
 		}
 
-		// FR : Si l'action est une suppression...
-		// EN : If the action is a deletion...
+		// Si l'action est une suppression...
 		elseif($_POST['type'] == 'del'){
+			// et qu'il existe dans le tableau, on le supprime
 			if(isset($arrTasks[$_POST['pos']])){
 				array_splice($arrTasks, $_POST['pos'], 1);
 				$arrResult['result'] = true;
@@ -36,8 +30,7 @@
 			}
 		}
 
-		// FR : On encode le tableau dans une chaine JSON et on sauvegarde.
-		// EN : We encode the array in a JSON string and we save it.
+		// On encode le tableau des taches dans une chaine JSON et on sauvegarde.
 		$sDbTasks = json_encode($arrTasks);
 		file_put_contents('db.txt', $sDbTasks);
 	}
