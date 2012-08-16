@@ -1,8 +1,13 @@
 <?php
 
+	$arrAction = array();
+	$arrAction[] = 'add';
+	$arrAction[] = 'del';
+	$arrAction[] = 'list';
+
 	$arrResult = array();
 	$arrResult['result'] = false;
-	if(isset($_POST['type'])){
+	if(isset($_POST['type']) && in_array($_POST['type'], $arrAction)){
 		// Si le fichier contenant les taches n'existe pas, on le crée.
 		if(!file_exists('db.txt')){
 			file_put_contents('db.txt', '');
@@ -15,16 +20,20 @@
 		// Si l'action est un ajout...
 		if($_POST['type'] == 'add'){
 			// ... on ajoute l'élément aux tableaux des taches.
-			$arrTasks[] = $_POST['item'];
+			$arrTasks[] = htmlentities($_POST['item'], ENT_QUOTES);
 			$arrResult['result'] = true;
 		}
 
 		// Si l'action est une suppression...
 		elseif($_POST['type'] == 'del'){
 			// et qu'il existe dans le tableau, on le supprime
-			if(isset($arrTasks[$_POST['pos']])){
-				array_splice($arrTasks, $_POST['pos'], 1);
-				$arrResult['result'] = true;
+			if(is_int($_POST['pos']){
+				if(isset($arrTasks[$_POST['pos']])){
+					array_splice($arrTasks, $_POST['pos'], 1);
+					$arrResult['result'] = true;
+				} else {
+					$arrResult['result'] = false;
+				}
 			} else {
 				$arrResult['result'] = false;
 			}
