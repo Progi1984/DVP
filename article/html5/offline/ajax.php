@@ -29,6 +29,12 @@
 				$arrResult['result'] = false;
 			}
 		}
+		
+		// Si l'action est un listing...
+		elseif($_POST['type'] == 'list'){
+			$arrResult['result'] = true;
+			$arrResult['data'] = $arrTasks;
+		}
 
 		// On encode le tableau des taches dans une chaine JSON et on sauvegarde.
 		$sDbTasks = json_encode($arrTasks);

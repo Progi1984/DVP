@@ -3,6 +3,24 @@
  $(document).ready(function(){
 	bOnlineStatus = navigator.onLine;
 	
+	// Lister les taches à l'initialisation de la page
+	$.ajax({
+		url: 'ajax.php',
+		dataType: 'json',
+		type: 'POST',
+		data:{
+			type:'list'
+		},
+		success: function(data) {
+			if(data.result == true){
+				$.each(data.data, function(key, value) { 
+					var sItem = '<li><span>'+value+'</span><img src="delete.png" alt="Supprimer" class="delTask"/></li>';
+					$('ul').append(sItem);
+				});
+			}
+		}
+	});
+	
 	// Evenement lors de la submission du formulaire
 	$('#frmTodo').submit(function(){
 		// Si on est en ligne
@@ -28,7 +46,6 @@
 						}
 					}
 				});
-				
 			}
 		} 
 		// Si on n'est pas en ligne
