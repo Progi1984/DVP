@@ -1,7 +1,6 @@
- var bOnlineStatus;
- 
- $(document).ready(function(){
-	bOnlineStatus = navigator.onLine;
+jQuery(function($){
+	var bOnlineStatus = navigator.onLine;
+	var jqoTaskLi = $('<li><span class="lblTask"></span><img src="delete.png" alt="Supprimer" class="delTask"/></li>');
 	
 	// Lister les taches à l'initialisation de la page
 	$.ajax({
@@ -14,8 +13,8 @@
 		success: function(data) {
 			if(data.result == true){
 				$.each(data.data, function(key, value) { 
-					var sItem = '<li><span>'+value+'</span><img src="delete.png" alt="Supprimer" class="delTask"/></li>';
-					$('ul').append(sItem);
+					var jqoItem = jqoTaskLi.clone().find('.lblTask').append(value);
+					$('ul').append(jqoItem);
 				});
 			}
 		}
@@ -40,8 +39,8 @@
 					},
 					success: function(data) {
 						if(data.result == true){
-							var sItem = '<li><span>'+sVal+'</span><img src="delete.png" alt="Supprimer" class="delTask"/></li>';
-							$('ul').append(sItem);
+							var jqoItem = jqoTaskLi.clone().find('.lblTask').append(sVal);
+							$('ul').append(jqoItem);
 							$('#txtItem').val('');
 						}
 					}
@@ -54,7 +53,7 @@
 		}
 		return false;
 	});
-	$(document).on('click', '.delTask', function(){
+	$('#ulTodo').on('click', '.delTask', function(){
 		// Si on est en ligne
 		if(bOnlineStatus){
 			var jqoParent = $(this).parent();
