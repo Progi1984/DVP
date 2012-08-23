@@ -27,7 +27,7 @@
 		// Si l'action est une suppression...
 		elseif($_POST['type'] == 'del'){
 			// et qu'il existe dans le tableau, on le supprime
-			if(is_int($_POST['pos']){
+			if(is_numeric($_POST['pos'])){
 				if(isset($arrTasks[$_POST['pos']])){
 					array_splice($arrTasks, $_POST['pos'], 1);
 					$arrResult['result'] = true;
