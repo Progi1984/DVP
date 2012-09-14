@@ -3,7 +3,7 @@ body{
     color: #556677;
     font-family: Arial;
 }
-div.content{
+.content{
 	margin:0 auto;
 	text-align: center;
 	width:300px;
@@ -34,9 +34,6 @@ li{
 }
 li:hover{
 	background-color: #AAAAAA;
-}
-li > span{
-
 }
 li > img{
 	cursor:pointer;

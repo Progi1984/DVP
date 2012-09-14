@@ -1,12 +1,8 @@
 <?php
 
-	$arrAction = array();
-	$arrAction[] = 'add';
-	$arrAction[] = 'del';
-	$arrAction[] = 'list';
+	$arrAction = array('add', 'del', 'list');
+	$arrResult = array('result' => false);
 
-	$arrResult = array();
-	$arrResult['result'] = false;
 	if(isset($_POST['type']) && in_array($_POST['type'], $arrAction)){
 		// Si le fichier contenant les taches n'existe pas, on le crée.
 		if(!file_exists('db.txt')){

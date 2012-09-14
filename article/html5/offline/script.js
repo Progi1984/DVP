@@ -1,5 +1,3 @@
-var bOnlineStatus = navigator.onLine;
-	
 jQuery(function($){
 	var jqoTaskLi = $('<li><span class="lblTask"></span><img src="delete.png" alt="Supprimer" class="delTask"/></li>');
 	
@@ -18,8 +16,64 @@ jQuery(function($){
 					jqoItem.find('.lblTask').html(value);
 					$('ul').append(jqoItem);
 				});
+				localStorage.clear();
 			}
 		}
+	});
+	
+	// Evenements lors de la mise on/off-line du navigateur
+	$(document).on('online', function() {
+		if(localStorage.getItem('numActions') == null){
+			localStorage.setItem('numActions', 0);
+		}
+		var numActions = localStorage.getItem('numActions');
+		numActions = parseInt(numActions);
+		if(numActions > 0){
+			// On parse toutes les actions
+			for (iInc = 0; iInc < numActions; iInc++) {
+				var sAction = localStorage.getItem('action'+iInc);
+				// On dirige en fonction des actions
+				if(sAction == 'add'){
+					// On envoie la requête AJAX d'ajout
+					$.ajax({
+						url: 'ajax.php',
+						dataType: 'json',
+						type: 'POST',
+						data:{
+							type:'add',
+							item:localStorage.getItem('item'+iInc)
+						},
+						success: function(data) {
+							if(data.result == false){
+								alert('Error')
+							}
+						}
+					});
+				}
+				else if(sAction == 'del'){
+					// On envoie la requête AJAX de suppression
+					$.ajax({
+						url: 'ajax.php',
+						dataType: 'json',
+						type: 'POST',
+						data:{
+							type:'del',
+							pos:localStorage.getItem('pos'+iInc)
+						},
+						success: function(data) {
+							if(data.result == false){
+								alert('Error')
+							}
+						}
+					});
+				}
+			}
+			// On nettoie toutes les actions
+			localStorage.clear();
+		}
+	});
+	$(document).on('online', function() {
+		localStorage.setItem('numActions', 0);
 	});
 	
 	// Evenement lors de la submission du formulaire
@@ -29,7 +83,7 @@ jQuery(function($){
 		var sVal = $.trim(sVal);
 			
 		// Si on est en ligne
-		if(bOnlineStatus){
+		if(navigator.onLine){
 			if(sVal != ''){
 				// On envoie une requête AJAX de type POST pour ajouter la tache
 				$.ajax({
@@ -73,7 +127,7 @@ jQuery(function($){
 	$('#ulTodo').on('click', '.delTask', function(){
 		var jqoParent = $(this).parent();
 		// Si on est en ligne
-		if(bOnlineStatus == true){
+		if(navigator.onLine == true){
 			// On envoie une requête AJAX de type POST pour supprimer la tache
 			$.ajax({
 				url: 'ajax.php',
@@ -105,62 +159,5 @@ jQuery(function($){
 			jqoParent.remove();
 		}
 	});
- });
  
-window.addEventListener('online', function() {
-	bOnlineStatus = true;
-	
-	if(localStorage.getItem('numActions') == null){
-		localStorage.setItem('numActions', 0);
-	}
-	var numActions = localStorage.getItem('numActions');
-	numActions = parseInt(numActions);
-	if(numActions > 0){
-		// On parse toutes les actions
-		for (iInc = 0; iInc < numActions; iInc++) {
-			var sAction = localStorage.getItem('action'+iInc);
-			// On dirige en fonction des actions
-			if(sAction == 'add'){
-				// On envoie la requête AJAX d'ajout
-				$.ajax({
-					url: 'ajax.php',
-					dataType: 'json',
-					type: 'POST',
-					data:{
-						type:'add',
-						item:localStorage.getItem('item'+iInc)
-					},
-					success: function(data) {
-						if(data.result == false){
-							alert('Error')
-						}
-					}
-				});
-			}
-			else if(sAction == 'del'){
-				// On envoie la requête AJAX de suppression
-			    $.ajax({
-					url: 'ajax.php',
-					dataType: 'json',
-					type: 'POST',
-					data:{
-						type:'del',
-						pos:localStorage.getItem('pos'+iInc)
-					},
-					success: function(data) {
-						if(data.result == false){
-							alert('Error')
-						}
-					}
-				});
-			}
-		}
-		// On nettoie toutes les actions
-		localStorage.clear();
-	}
-}, true);
- 
-window.addEventListener('offline', function() {
-	bOnlineStatus = false;
-	localStorage.setItem('numActions', 0);
-}, true);
+});
