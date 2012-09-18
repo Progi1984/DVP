@@ -4,18 +4,18 @@
 	$arrResult = array('result' => false);
 
 	if(isset($_POST['type']) && in_array($_POST['type'], $arrAction)){
-		// Si le fichier contenant les taches n'existe pas, on le crée.
+		// Si le fichier contenant les tâches n'existe pas, on le crée.
 		if(!file_exists('db.txt')){
 			file_put_contents('db.txt', '');
 		}
 
-		// On charge le fichier & décode la chaine JSON contenant les tâches.
+		// On charge le fichier et décode la chaine JSON contenant les tâches.
 		$sDbTasks = file_get_contents('db.txt');
 		$arrTasks = json_decode($sDbTasks);
 
 		// Si l'action est un ajout...
 		if($_POST['type'] == 'add'){
-			// ... on ajoute l'élément aux tableaux des taches.
+			// ... on ajoute l'élément aux tableaux des tâches.
 			$arrTasks[] = htmlentities($_POST['item'], ENT_QUOTES);
 			$arrResult['result'] = true;
 		}

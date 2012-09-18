@@ -1,7 +1,7 @@
 jQuery(function($){
 	var jqoTaskLi = $('<li><span class="lblTask"></span><img src="delete.png" alt="Supprimer" class="delTask"/></li>');
 	
-	// Lister les taches à l'initialisation de la page
+	// Lister les tâches à l'initialisation de la page
 	$.ajax({
 		url: 'ajax.php',
 		dataType: 'json',
@@ -21,7 +21,7 @@ jQuery(function($){
 		}
 	});
 	
-	// Evenements lors de la mise on/off-line du navigateur
+	// Événements lors de la mise on/off-line du navigateur
 	$(document).on('online', function() {
 		if(localStorage.getItem('numActions') == null){
 			localStorage.setItem('numActions', 0);
@@ -76,16 +76,16 @@ jQuery(function($){
 		localStorage.setItem('numActions', 0);
 	});
 	
-	// Evenement lors de la submission du formulaire
+	// Événement lors de la soumission du formulaire
 	$('#frmTodo').submit(function(){
-		// On récupére le text nettoyé des espaces avant et après
+		// On récupére le texte nettoyé des espaces avant et après
 		var sVal = $('#txtItem').val();
 		var sVal = $.trim(sVal);
 			
 		// Si on est en ligne
 		if(navigator.onLine){
 			if(sVal != ''){
-				// On envoie une requête AJAX de type POST pour ajouter la tache
+				// On envoie une requête AJAX de type POST pour ajouter la tâche
 				$.ajax({
 					url: 'ajax.php',
 					dataType: 'json',
@@ -128,7 +128,7 @@ jQuery(function($){
 		var jqoParent = $(this).parent();
 		// Si on est en ligne
 		if(navigator.onLine == true){
-			// On envoie une requête AJAX de type POST pour supprimer la tache
+			// On envoie une requête AJAX de type POST pour supprimer la tâche
 			$.ajax({
 				url: 'ajax.php',
 				dataType: 'json',
