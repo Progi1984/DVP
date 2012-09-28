@@ -13,16 +13,16 @@
 		$sDbTasks = file_get_contents('db.txt');
 		$arrTasks = json_decode($sDbTasks);
 
-		// Si l'action est un ajout...
+		// Si l'action est un ajout…
 		if($_POST['type'] == 'add'){
-			// ... on ajoute l'élément aux tableaux des tâches.
+			// … on ajoute l'élément aux tableaux des tâches.
 			$arrTasks[] = htmlentities($_POST['item'], ENT_QUOTES);
 			$arrResult['result'] = true;
 		}
 
-		// Si l'action est une suppression...
+		// Si l'action est une suppression…
 		elseif($_POST['type'] == 'del'){
-			// et qu'il existe dans le tableau, on le supprime
+			// … et qu'il existe dans le tableau, on le supprime
 			if(is_numeric($_POST['pos'])){
 				if(isset($arrTasks[$_POST['pos']])){
 					array_splice($arrTasks, $_POST['pos'], 1);
@@ -35,7 +35,7 @@
 			}
 		}
 		
-		// Si l'action est un listing...
+		// Si l'action est un listing…
 		elseif($_POST['type'] == 'list'){
 			$arrResult['result'] = true;
 			$arrResult['data'] = $arrTasks;
