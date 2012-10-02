@@ -21,7 +21,7 @@ jQuery(function($){
 		}
 	});
 	
-	// Événements lors de la mise on/off-line du navigateur
+	// Événements lors de la mise on/offline du navigateur
 	$(document).on('online', function() {
 		if(localStorage.getItem('numActions') == null){
 			localStorage.setItem('numActions', 0);
